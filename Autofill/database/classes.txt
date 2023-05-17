@@ -1,0 +1,9 @@
+Date of birth
+Date of expiry
+Document #
+ID_cards
+Name
+Nationality
+Patronomyc
+Sex
+Surname

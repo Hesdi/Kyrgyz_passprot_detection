@@ -1,0 +1,5 @@
+train: C:/Users/abdul/Documents/.Prog/Course2/Autofill/database/images/train
+val: C:/Users/abdul/Documents/.Prog/Course2/Autofill/database/images/val
+
+nc: 9
+names: ["Date of birth","Date of expiry","Document #","ID_cards","Name","Nationality","Patronomyc","Sex","Surname"]

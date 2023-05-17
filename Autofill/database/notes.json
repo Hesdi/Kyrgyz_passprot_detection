@@ -1,0 +1,45 @@
+{
+  "categories": [
+    {
+      "id": 0,
+      "name": "Date of birth"
+    },
+    {
+      "id": 1,
+      "name": "Date of expiry"
+    },
+    {
+      "id": 2,
+      "name": "Document #"
+    },
+    {
+      "id": 3,
+      "name": "ID_cards"
+    },
+    {
+      "id": 4,
+      "name": "Name"
+    },
+    {
+      "id": 5,
+      "name": "Nationality"
+    },
+    {
+      "id": 6,
+      "name": "Patronomyc"
+    },
+    {
+      "id": 7,
+      "name": "Sex"
+    },
+    {
+      "id": 8,
+      "name": "Surname"
+    }
+  ],
+  "info": {
+    "year": 2023,
+    "version": "1.0",
+    "contributor": "Label Studio"
+  }
+}
