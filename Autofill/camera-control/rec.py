@@ -1,12 +1,27 @@
 import cv2
 import numpy as np
+import time
 
 # Define the dimensions of the rectangle
-rectangle_width = 400
-rectangle_height = 300
+rectangle_width = 800
+rectangle_height = 500
+
+# Define the desired video width and height
+video_width = 1280
+video_height = 720
 
 # Initialize the camera
 camera = cv2.VideoCapture(0)
+
+# Set the camera resolution
+camera.set(cv2.CAP_PROP_FRAME_WIDTH, video_width)
+camera.set(cv2.CAP_PROP_FRAME_HEIGHT, video_height)
+
+# Set the time interval for capturing images (in seconds)
+capture_interval = 2
+
+# Initialize the timestamp for capturing images
+last_capture_time = time.time()
 
 while True:
     # Read a frame from the camera
@@ -36,8 +51,20 @@ while True:
     alpha = 0.3  # You can adjust this value to control the transparency
     outside_rect = cv2.addWeighted(frame, 1 - alpha, inside_rect, alpha, 0)
 
+    # Resize the frame for display
+    display_frame = cv2.resize(outside_rect, (video_width, video_height))
+
     # Display the resulting frame
-    cv2.imshow('Camera', outside_rect)
+    cv2.imshow('Camera', display_frame)
+
+    # Check if it's time to capture an image
+    current_time = time.time()
+    if current_time - last_capture_time >= capture_interval:
+        # Save the image
+        image_filename = f'captured_image_{int(current_time)}.jpg'
+        cv2.imwrite(image_filename, frame)
+        print(f"Image captured and saved as '{image_filename}'")
+        last_capture_time = current_time
 
     # Check for the 'q' key to exit the loop
     if cv2.waitKey(1) & 0xFF == ord('q'):
