@@ -3,11 +3,11 @@ import numpy as np
 import time
 
 # Define the dimensions of the rectangle
-rectangle_width = 800
-rectangle_height = 500
+rectangle_width = 400
+rectangle_height = 300
 
 # Define the desired video width and height
-video_width = 1280
+video_width = 1080
 video_height = 720
 
 # Initialize the camera
@@ -65,6 +65,7 @@ while True:
         cv2.imwrite(image_filename, frame)
         print(f"Image captured and saved as '{image_filename}'")
         last_capture_time = current_time
+
 
     # Check for the 'q' key to exit the loop
     if cv2.waitKey(1) & 0xFF == ord('q'):
