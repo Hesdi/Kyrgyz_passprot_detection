@@ -1,105 +1,70 @@
+from ultralytics import YOLO
 import cv2
 import numpy as np
-import onnxruntime as ort
-import tensorflow as tf
+import rec  # Import the rec module
 
-# Load the ONNX model
-model_path = 'C:/Users/abdul/Documents/.Prog/MachineLearning/runs/detect/train8/weights/best.onnx'
-sess = ort.InferenceSession(model_path)
-input_name = sess.get_inputs()[0].name
-output_name = sess.get_outputs()[0].name
+if __name__ == '__main__':
+    # Load a model
+    model = YOLO("C:/Users/abdul/Documents/.Prog/Course2/Autofill/runs/detect/train6/weights/best.pt")
 
-# Define the object classes
-class_names = ['ID_cards']
+    # Open the video capture
+    video_capture = cv2.VideoCapture(0)  # Replace 'path_to_video.mp4' with the actual path
 
-# Set up the webcam
-cap = cv2.VideoCapture(0)
+    # Define variables for class counting
+    class_count = 0
 
-def postprocess(output):
-    num_classes = 80
-    confidence_threshold = 0.5
-    iou_threshold = 0.4
+    while True:
+        # Read a frame from the video
+        ret, frame = video_capture.read()
 
-    anchors = np.array([12, 16, 19, 36, 40, 28, 36, 75, 76, 55, 72, 146, 142, 110, 192, 243, 459, 401]).reshape(-1, 2)
+        # Check if the frame was read successfully
+        if not ret:
+            break
 
-    grid_size = 80
-    num_anchors = 3
+        # Convert the frame to RGB format
+        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-    # Reshape output to grid size x grid size x num anchors x (num classes + 5)
-    output = output.reshape((1, num_anchors, -1, num_classes + 5))
+        # Use the model to predict on the frame
+        results = model(frame_rgb)
 
-    # Get bounding box information from output
-    boxes = output[:, :, :, :4]
-    box_centers = boxes[:, :, :, :2]
-    box_sizes = boxes[:, :, :, 2:4]
+        # Get the captured image from the rec module
+        captured_image = rec.captured_image
 
-    # Adjust box coordinates using anchor boxes
-    anchors = anchors.reshape(1, num_anchors, 1, 2)
-    box_centers = box_centers * 2.0 - 0.5
-    box_sizes = np.exp(box_sizes) * anchors
+        # Check if the captured image is available
+        if captured_image is not None:
+            # Convert the captured image to RGB format
+            captured_image_rgb = cv2.cvtColor(captured_image, cv2.COLOR_BGR2RGB)
 
-    # Convert box coordinates to top-left and bottom-right
-    boxes = np.concatenate([box_centers - box_sizes / 2, box_centers + box_sizes / 2], axis=-1)
+            # Use the model to predict on the captured image
+            captured_image_results = model(captured_image_rgb)
 
-    # Get confidence scores and class probabilities from output
-    confidence_scores = output[:, :, :, 4:5]
-    class_probabilities = output[:, :, :, 5:]
+            # Get the class labels and scores from the captured image results
+            labels = captured_image_results.xyxy[0][:, -1]
+            scores = captured_image_results.xyxy[0][:, -2]
 
-    # Get class predictions
-    class_predictions = np.argmax(class_probabilities, axis=-1)
+            # Count the number of unique classes with scores above a threshold
+            unique_classes = np.unique(labels)
+            num_classes = len(unique_classes)
+            num_above_threshold = np.sum(scores > 0.5)  # Adjust the threshold as needed
 
-    # Filter out boxes with low confidence scores
-    mask = confidence_scores >= confidence_threshold
-    boxes = boxes[mask]
-    class_predictions = class_predictions[mask]
-    confidence_scores = confidence_scores[mask]
+            # Check if at least 8 classes are detected with scores above the threshold
+            if num_classes >= 8 and num_above_threshold >= 8:
+                # Save the captured image with the predicted bounding boxes
+                captured_image_results.save(save_dir='C:/Users/abdul/Documents/.Prog/Course2/Autofill/images/results')
 
-    # Apply non-maximum suppression to filter out overlapping boxes
-    selected_indices = tf.image.non_max_suppression(
-        boxes=boxes,
-        scores=tf.squeeze(confidence_scores),
-        max_output_size=100,
-        iou_threshold=iou_threshold,
-        score_threshold=confidence_threshold
-    )
+                # Exit the loop and end the program
+                break
 
-    # Gather selected boxes, labels, and scores
-    boxes = tf.gather(boxes, selected_indices).numpy()
-    labels = tf.gather(class_predictions, selected_indices).numpy()
-    scores = tf.gather(tf.squeeze(confidence_scores), selected_indices).numpy()
+        # Process the prediction results on the video frame
+        # ...
 
-    return boxes, labels, scores
+        # Display the frame with the prediction results
+        # ...
 
+        # Check for the 'q' key to exit the loop
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
 
-while True:
-    # Read the frame from the webcam
-    ret, frame = cap.read()
-    
-    # Preprocess the input frame
-    resized_frame = cv2.resize(frame, (640, 640))
-    input_data = resized_frame.transpose((2, 0, 1)).astype(np.float32)
-    input_data = np.expand_dims(input_data, axis=0)
-    
-    # Run inference on the model
-    output = sess.run([output_name], {input_name: input_data})[0]
-
-    
-    # Postprocess the model output
-    boxes, labels, scores = postprocess(output)
-    
-    # Draw the bounding boxes on the frame
-    for box, label, score in zip(boxes, labels, scores):
-        x1, y1, x2, y2 = box
-        cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
-        cv2.putText(frame, f"{class_names[label]} {score:.2f}", (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-        
-    # Show the output frame
-    cv2.imshow('Object Detection', frame)
-    
-    # Exit if the user presses the 'q' key
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-        
-# Release the webcam and close the window
-cap.release()
-cv2.destroyAllWindows()
+    # Release the video capture and close the windows
+    video_capture.release()
+    cv2.destroyAllWindows()

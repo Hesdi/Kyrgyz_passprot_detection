@@ -1,8 +1,8 @@
 task: detect
 mode: train
-model: yolov8n.yaml
-data: C:/Users/abdul/Downloads/database/labels
-epochs: 3
+model: C:/Users/abdul/Documents/.Prog/Course2/runs/detect/train5/weights/best.pt
+data: Autofill/mydataset.yaml
+epochs: 1000
 patience: 50
 batch: 16
 imgsz: 640
