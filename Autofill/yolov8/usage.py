@@ -8,7 +8,7 @@ if __name__ == '__main__':
 
     # # Use the model
     # model.train(data="Autofill/mydataset.yaml", epochs=1000)  # train the model
-    captured_image_results = model.predict(source=0, show=True, save_crop=True, conf=0.5) #predict on an image
+    results = model.predict(source='C:/Users/abdul/Documents/.Prog/Course2/Autofill/images/1658119050410.jpg', show=True, conf=0.5) #predict on an image
 
     # metrics = model.val()  # evaluate model performance on the validation set
     # results = model("C:/Users/abdul/Documents/.Prog/MachineLearning/1662379777704.jpg")  # predict on an image
