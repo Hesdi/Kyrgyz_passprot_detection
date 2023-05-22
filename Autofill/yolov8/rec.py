@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-import multiprocessing
 import threading
 import time
 from ultralytics import YOLO
@@ -144,55 +143,55 @@ def close():
                     n += 1
                     r = box.xyxy[0].astype(int)
                     crop = cap[r[1]:r[3], r[0]:r[2]]
-                    cv2.imwrite(str(cls) + ".jpg", crop)
+                    cv2.imwrite('for_detecting/'+ str(cls) + ".jpg", crop)
                     i1 = False
                 if Date_of_expiry_found and i2:
                     n += 1
                     r = box.xyxy[0].astype(int)
                     crop = cap[r[1]:r[3], r[0]:r[2]]
-                    cv2.imwrite(str(cls) + ".jpg", crop)
+                    cv2.imwrite('for_detecting/'+ str(cls) + ".jpg", crop)
                     i2 = False
                 if Document_num_found and i3:
                     n += 1
                     r = box.xyxy[0].astype(int)
                     crop = cap[r[1]:r[3], r[0]:r[2]]
-                    cv2.imwrite(str(cls) + ".jpg", crop)
+                    cv2.imwrite('for_detecting/'+ str(cls) + ".jpg", crop)
                     i3 = False
                 if ID_cards_found and i4:
                     n += 1
                     r = box.xyxy[0].astype(int)
                     crop = cap[r[1]:r[3], r[0]:r[2]]
-                    cv2.imwrite(str(cls) + ".jpg", crop)
+                    cv2.imwrite('for_detecting/'+ str(cls) + ".jpg", crop)
                     i4 = False
                 if Name_found and i5:
                     n += 1
                     r = box.xyxy[0].astype(int)
                     crop = cap[r[1]:r[3], r[0]:r[2]]
-                    cv2.imwrite(str(cls) + ".jpg", crop)
+                    cv2.imwrite('for_detecting/'+ str(cls) + ".jpg", crop)
                     i5 = False
                 if Nationality_found and i6:
                     n += 1
                     r = box.xyxy[0].astype(int)
                     crop = cap[r[1]:r[3], r[0]:r[2]]
-                    cv2.imwrite(str(cls) + ".jpg", crop)
+                    cv2.imwrite('for_detecting/'+ str(cls) + ".jpg", crop)
                     i6 = False
                 if Patronomycs_found and i7:
                     n += 1
                     r = box.xyxy[0].astype(int)
                     crop = cap[r[1]:r[3], r[0]:r[2]]
-                    cv2.imwrite(str(cls) + ".jpg", crop)
+                    cv2.imwrite('for_detecting/'+ str(cls) + ".jpg", crop)
                     i7 = False
                 if Sex_found and i8:
                     n += 1
                     r = box.xyxy[0].astype(int)
                     crop = cap[r[1]:r[3], r[0]:r[2]]
-                    cv2.imwrite(str(cls) + ".jpg", crop)
+                    cv2.imwrite('for_detecting/'+ str(cls) + ".jpg", crop)
                     i8 = False
                 if Surname_found and i9:
                     n += 1
                     r = box.xyxy[0].astype(int)
                     crop = cap[r[1]:r[3], r[0]:r[2]]
-                    cv2.imwrite(str(cls) + ".jpg", crop)
+                    cv2.imwrite('for_detecting/'+ str(cls) + ".jpg", crop)
                     i9 = False
             # print n when its value changes
             if n != previous_n:
