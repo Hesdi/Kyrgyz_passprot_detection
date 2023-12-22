@@ -1,1 +1,5 @@
+#Confidential images
 /for_detecting
+/Autofill/database/images
+/Autofill/database/labels
+/Autofill/runs/detect

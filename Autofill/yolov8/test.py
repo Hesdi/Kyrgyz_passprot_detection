@@ -5,7 +5,7 @@ import rec  # Import the rec module
 
 if __name__ == '__main__':
     # Load a model
-    model = YOLO("C:/Users/abdul/Documents/.Prog/Course2/Autofill/runs/detect/train6/weights/best.pt")
+    model = YOLO("Autofill/runs/detect/train6/weights/best.pt")
 
     # Open the video capture
     video_capture = cv2.VideoCapture(0)  # Replace 'path_to_video.mp4' with the actual path
@@ -50,7 +50,7 @@ if __name__ == '__main__':
             # Check if at least 8 classes are detected with scores above the threshold
             if num_classes >= 8 and num_above_threshold >= 8:
                 # Save the captured image with the predicted bounding boxes
-                captured_image_results.save(save_dir='C:/Users/abdul/Documents/.Prog/Course2/Autofill/images/results')
+                captured_image_results.save(save_dir='Autofill/images/results')
 
                 # Exit the loop and end the program
                 break
