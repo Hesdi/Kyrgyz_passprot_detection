@@ -12,7 +12,7 @@ Ultralytics YOLOv8 is a cutting-edge, state-of-the-art (SOTA) model that builds 
 
 ### 2. Label Studio
 
-![](labelstd.jpg)
+![](labelstd.png)
 
 Label Studio is an open source data labeling tool. It lets you label data types like audio, text, images, videos, and time series with a simple and straightforward UI and export to various model formats. It can be used to prepare raw data or improve existing training data to get more accurate ML models.
 
